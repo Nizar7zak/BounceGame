@@ -1,3 +1,4 @@
+import BlockStart from "./BlockStart"
 
 const Level = () => {
   return (
@@ -16,6 +17,7 @@ const Level = () => {
             <planeGeometry />
             <meshStandardMaterial color="greenyellow" />
         </mesh>
+        <BlockStart />
     </>
   )
 }
