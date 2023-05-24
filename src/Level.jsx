@@ -1,4 +1,6 @@
+import { useFrame } from '@react-three/fiber'
 import { RigidBody } from '@react-three/rapier'
+import { useRef } from 'react'
 import * as THREE from 'three'
 
 THREE.ColorManagement.legacyMode = false
@@ -12,6 +14,17 @@ const wallMaterial = new THREE.MeshStandardMaterial({ color: 'slategrey' })
 
 
 const BlockSpinner = ({ position=[ 0, 0, 0 ] }) => {
+    const obstacle = useRef()
+
+    useFrame((state) => {
+        const time = state.clock.elapsedTime
+
+        const euler = new THREE.Euler(0, time, 0)
+        const rotation = new THREE.Quaternion()
+        rotation.setFromEuler(euler)
+
+        obstacle.current.setNextKinematicRotation(rotation)
+    })
     return (
       <group position={position}>
   
@@ -23,7 +36,7 @@ const BlockSpinner = ({ position=[ 0, 0, 0 ] }) => {
             receiveShadow
         />
 
-        <RigidBody type="kinematicPosition" position={[ 0, 0.3, 0]} restitution={0.2} friction={0} >
+        <RigidBody ref={obstacle} type="kinematicPosition" position={[ 0, 0.3, 0]} restitution={0.2} friction={0} >
 
             <mesh
                 geometry={boxGeometry}
