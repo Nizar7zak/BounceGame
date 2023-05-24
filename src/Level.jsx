@@ -60,8 +60,8 @@ const BlockStart = ({ position=[ 0, 0, 0 ] }) => {
 const Level = () => {
   return (
     <>
-        <BlockStart position={[ 0, 0, 4 ]} material={floor1Material} geometry={boxGeometry} />
-        <BlockSpinner position={[ 0, 0, 0 ]} material={floor2Material} geometry={boxGeometry} obstacleMaterial={obstacleMaterial} />
+        <BlockStart position={[ 0, 0, 4 ]} />
+        <BlockSpinner position={[ 0, 0, 0 ]} />
     </>
   )
 }
