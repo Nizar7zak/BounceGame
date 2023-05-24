@@ -1,6 +1,6 @@
 import { useFrame } from '@react-three/fiber'
 import { RigidBody } from '@react-three/rapier'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import * as THREE from 'three'
 
 THREE.ColorManagement.legacyMode = false
@@ -16,15 +16,18 @@ const wallMaterial = new THREE.MeshStandardMaterial({ color: 'slategrey' })
 const BlockSpinner = ({ position=[ 0, 0, 0 ] }) => {
     const obstacle = useRef()
 
+    const [ speed ] = useState(() => (Math.random() + 0.2) * (Math.random() < 0.5 ? -1 : 1) )
+    console.log(speed)
     useFrame((state) => {
         const time = state.clock.elapsedTime
 
-        const euler = new THREE.Euler(0, time, 0)
+        const euler = new THREE.Euler(0, time * speed , 0)
         const rotation = new THREE.Quaternion()
         rotation.setFromEuler(euler)
 
         obstacle.current.setNextKinematicRotation(rotation)
     })
+
     return (
       <group position={position}>
   
