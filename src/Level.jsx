@@ -146,13 +146,31 @@ const BlockAxe = ({ position=[ 0, 0, 0 ] }) => {
     )
 }
 
+
+const BlockEnd = ({ position=[ 0, 0, 0 ] }) => {
+    return (
+      <group position={position}>
+  
+        <mesh
+            geometry={boxGeometry}
+            material={floor1Material}
+            scale={[ 4, 0.2, 4 ]} 
+            position={[ 0, 0, 0 ]}
+            receiveShadow
+        />
+  
+      </group>
+    )
+}
+
 const Level = () => {
   return (
     <>
-        <BlockStart position={[ 0, 0, 12 ]} />
-        <BlockSpinner position={[ 0, 0, 8 ]} />
-        <BlockLimbo position={[ 0, 0, 4 ]} />
-        <BlockAxe position={[ 0, 0, 0 ]} />
+        <BlockStart position={[ 0, 0, 16 ]} />
+        <BlockSpinner position={[ 0, 0, 12 ]} />
+        <BlockLimbo position={[ 0, 0, 8 ]} />
+        <BlockAxe position={[ 0, 0, 4 ]} />
+        <BlockEnd position={[ 0, 0, 0 ]} />
     </>
   )
 }
