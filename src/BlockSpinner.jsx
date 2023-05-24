@@ -1,8 +1,8 @@
 
-const BlockStart = ({ position=[ 0, 0, 0 ], material, geometry }) => {
-  return (
-    <group position={position}>
-
+const BlockSpinner = ({ position=[ 0, 0, 0 ], material, geometry}) => {
+    return (
+      <group position={position}>
+  
         <mesh
             geometry={geometry}
             material={material}
@@ -10,9 +10,9 @@ const BlockStart = ({ position=[ 0, 0, 0 ], material, geometry }) => {
             position={[ 0, -0.1, 0 ]}
             receiveShadow
         />
-
-    </group>
-  )
-}
-
-export default BlockStart
+  
+      </group>
+    )
+  }
+  
+  export default BlockSpinner
