@@ -12,17 +12,17 @@ const Interface = () => {
         <div className="controls">
 
             <div className="raw">
-                <div className="key"></div>
+                <div className={`key ${forward ? 'active' : ''}`}></div>
             </div>
 
             <div className="raw">
-                <div className="key"></div>
-                <div className="key"></div>
-                <div className="key"></div>
+                <div className={`key ${leftward ? 'active' : ''}`}></div>
+                <div className={`key ${backward ? 'active' : ''}`}></div>
+                <div className={`key ${rightward ? 'active' : ''}`}></div>
             </div>
 
             <div className="raw">
-                <div className="key large"></div>
+                <div className={`key large ${jump ? 'active' : ''}`}></div>
             </div>
 
         </div>
