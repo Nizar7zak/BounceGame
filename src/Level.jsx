@@ -178,23 +178,31 @@ const BlockEnd = ({ position=[ 0, 0, 0 ] }) => {
 const Bounds = ({ length = 1 }) => {
   console.log(length)
   return (
-  <>
-    <mesh 
-      geometry={boxGeometry}
-      material={wallMaterial}
-      scale={ [ 0.3, 1.5, length * 4 ] }
-      position={ [ 2.15, 0.75, - length * 1.71] }
-      castShadow
-    />
+    <RigidBody type='fixed'>
+      <mesh 
+        geometry={boxGeometry}
+        material={wallMaterial}
+        scale={ [ 0.3, 1.5, length * 4 ] }
+        position={ [ 2.15, 0.75, - length * 1.71] }
+        castShadow
+      />
 
-    <mesh 
-      geometry={boxGeometry}
-      material={wallMaterial}
-      scale={ [ 0.3, 1.5, length * 4 ] }
-      position={ [ - 2.15, 0.75, - length * 1.71] }
-      receiveShadow
-    /> 
-  </>
+      <mesh 
+        geometry={boxGeometry}
+        material={wallMaterial}
+        scale={ [ 0.3, 1.5, length * 4 ] }
+        position={ [ - 2.15, 0.75, - length * 1.71] }
+        receiveShadow
+      /> 
+
+      <mesh 
+        geometry={boxGeometry}
+        material={wallMaterial}
+        scale={ [ 4, 1.5, 0.3 ] }
+        position={ [ 0, 0.75, - length * 3.6888] }
+        receiveShadow
+      /> 
+    </RigidBody>
   )
 }
 
