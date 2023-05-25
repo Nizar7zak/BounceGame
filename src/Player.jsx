@@ -44,6 +44,8 @@ const Player = () => {
             colliders='ball'
             restitution={0.2}
             friction={1}
+            linearDamping={0.5}
+            angularDamping={0.5}
         >
         <mesh castShadow >
             <icosahedronGeometry args={[ 0.3, 1 ]} />
