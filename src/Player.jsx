@@ -7,6 +7,21 @@ const Player = () => {
     const body = useRef()
     const [ subscribeKeys, getKeys ] = useKeyboardControls()
 
+    const jump = () => {
+        console.log('Jump?')
+    }
+
+    useFrame(() => {
+        subscribeKeys(
+            state => state.jump,
+            (value) => {
+                if(value){
+                    jump()
+                }
+            }
+        )
+    }, [])
+ 
     useFrame((state, delta) => {
         const keys = getKeys()
         const { forward, backward, leftward, rightward } = keys;
