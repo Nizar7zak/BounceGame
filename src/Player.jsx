@@ -26,7 +26,7 @@ const Player = () => {
     }
 
     useEffect(() => {
-        subscribeKeys(
+        const unsubscribeJump = subscribeKeys(
             (state) => state.jump,
             (value) => {
                 if(value){
@@ -34,6 +34,10 @@ const Player = () => {
                 }
             }
         )
+
+        return () => {
+            unsubscribeJump()
+        }
     }, [])
  
     useFrame((state, delta) => {
