@@ -3,11 +3,17 @@ import { RigidBody, useRapier } from "@react-three/rapier"
 import { useKeyboardControls } from "@react-three/drei"
 import { useEffect, useRef, useState } from "react"
 import * as THREE from 'three'
+import useGames from "./stores/useGames"
 
 const Player = () => {
     const body = useRef()
     const [smoothedCameraPosition] = useState(() => new THREE.Vector3(10, 10, 10))
     const [smoothedCameraTarget] = useState(() => new THREE.Vector3())
+
+    const start = useGames((state) => state.start)
+    const end = useGames((state) => state.end)
+    const blockCounts = useGames((state) => state.blockCount)
+    const restart = useGames((state) => state.restart)
 
     const [ subscribeKeys, getKeys ] = useKeyboardControls()
 
@@ -38,8 +44,14 @@ const Player = () => {
             }
         )
 
+        const unsubscribeAny = subscribeKeys(() => {
+            start()
+
+        })
+
         return () => {
             unsubscribeJump()
+            unsubscribeAny()
         }
     }, [])
  
@@ -95,6 +107,17 @@ const Player = () => {
 
        state.camera.position.copy(smoothedCameraPosition)
        state.camera.lookAt(smoothedCameraTarget)
+
+       /** 
+        * Phases 
+        **/
+       if(bodyPosition.z < - (blockCounts * 4 + 2)) {
+            end()
+       }
+
+       if(bodyPosition.y < -4) {
+            restart()
+       }
     })
 
   return <RigidBody 
