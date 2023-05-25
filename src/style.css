@@ -19,3 +19,15 @@ body,
     height: 100%;
     pointer-events: none;
 }
+
+.time { 
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    font-size: 6vh;
+    background-color: #00000033;
+    padding-top: 5px;
+    text-align: center;
+}
