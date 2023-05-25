@@ -3,6 +3,7 @@ import useGames from "./stores/useGames"
 
 const Interface = () => {
     const restart = useGames((state) => state.restart)
+    const phase = useGames((state) => state.phase)
 
     const forward = useKeyboardControls((state => state.forward))
     const backward = useKeyboardControls((state => state.backward))
@@ -14,7 +15,7 @@ const Interface = () => {
   return (
     <div className="interface">
         <div className="time">0.00</div>
-        <div className="restart" onClick={restart}>Restart</div>
+        {phase === 'ended' ? <div className="restart" onClick={restart}>Restart</div> : null}
 
         <div className="controls">
 
