@@ -1,7 +1,7 @@
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { RigidBody } from '@react-three/rapier'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
 THREE.ColorManagement.legacyMode = false
@@ -30,7 +30,7 @@ const BlockStart = ({ position=[ 0, 0, 0 ] }) => {
 }
 
 
-const BlockSpinner = ({ position=[ 0, 0, 0 ] }) => {
+export const BlockSpinner = ({ position=[ 0, 0, 0 ] }) => {
     const obstacle = useRef()
 
     const [ speed ] = useState(() => (Math.random() + 0.2) * (Math.random() < 0.5 ? -1 : 1) )
@@ -71,7 +71,7 @@ const BlockSpinner = ({ position=[ 0, 0, 0 ] }) => {
     )
 }
 
-const BlockLimbo = ({ position=[ 0, 0, 0 ] }) => {
+export const BlockLimbo = ({ position=[ 0, 0, 0 ] }) => {
     const obstacle = useRef()
 
     const [ timeOffset ] = useState(() => (Math.random() * Math.PI * 2 ) )
@@ -109,7 +109,7 @@ const BlockLimbo = ({ position=[ 0, 0, 0 ] }) => {
     )
 }
 
-const BlockAxe = ({ position=[ 0, 0, 0 ] }) => {
+export const BlockAxe = ({ position=[ 0, 0, 0 ] }) => {
     const obstacle = useRef()
 
     const [ timeOffset ] = useState(() => (Math.random() * Math.PI * 2 ) )
@@ -175,16 +175,24 @@ const BlockEnd = ({ position=[ 0, 0, 0 ] }) => {
     )
 }
 
-const Level = () => {
+export const Level = ({ count=5, types=[BlockAxe, BlockLimbo, BlockSpinner] }) => {
+
+  const blocks = useMemo(() => {
+    const blocks = []
+    for( let i = 0; i < count; i++) {
+      const type = types[Math.floor(Math.random() * types.length)]
+      blocks.push(type)
+    }
+
+    return blocks;
+
+  }, [count, types])
   return (
     <>
-        <BlockStart position={[ 0, 0, 16 ]} />
-        <BlockSpinner position={[ 0, 0, 12 ]} />
-        <BlockLimbo position={[ 0, 0, 8 ]} />
-        <BlockAxe position={[ 0, 0, 4 ]} />
-        <BlockEnd position={[ 0, 0, 0 ]} />
+      <BlockStart position={[ 0, 0, 0 ]} />
+      { blocks.map((Block, index) => <Block key={index} position={[ 0, 0, -(index + 1) * 4  ]} /> ) }
+      <BlockEnd position={[ 0, 0, - (count + 1) * 4 ]} />        
     </>
   )
 }
 
-export default Level
