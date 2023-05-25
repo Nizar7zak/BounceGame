@@ -1,7 +1,13 @@
+import { RigidBody } from "@react-three/rapier"
 
 const Player = () => {
   return (
-    null
+    <RigidBody>
+        <mesh castShadow >
+            <icosahedronGeometry args={[ 0.3, 1 ]} />
+            <meshStandardMaterial flatShading color='mediumpurple' />
+        </mesh>
+    </RigidBody>
   )
 }
 
