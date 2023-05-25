@@ -1,11 +1,13 @@
 import { useFrame } from "@react-three/fiber"
 import { RigidBody, useRapier } from "@react-three/rapier"
 import { useKeyboardControls } from "@react-three/drei"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import * as THREE from 'three'
 
 const Player = () => {
     const body = useRef()
+    const [smoothedCameraPosition] = useState(() => new THREE.Vector3(10, 10, 10))
+    const [smoothedCameraTarget] = useState(() => new THREE.Vector3())
 
     const [ subscribeKeys, getKeys ] = useKeyboardControls()
 
@@ -88,8 +90,11 @@ const Player = () => {
        cameraTarget.copy(bodyPosition)
        cameraTarget.y += 0.25
 
-       state.camera.position.copy(cameraPosition)
-       state.camera.lookAt(cameraTarget)
+       smoothedCameraPosition.lerp(cameraPosition, 5 * delta)
+       smoothedCameraTarget.lerp(cameraTarget, 5 * delta)
+
+       state.camera.position.copy(smoothedCameraPosition)
+       state.camera.lookAt(smoothedCameraTarget)
     })
 
   return <RigidBody 
