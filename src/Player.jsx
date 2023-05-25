@@ -41,6 +41,9 @@ const Player = () => {
     }, [])
  
     useFrame((state, delta) => {
+        /** 
+        * Controls  
+        **/
         const keys = getKeys()
         const { forward, backward, leftward, rightward } = keys;
 
@@ -69,6 +72,10 @@ const Player = () => {
 
         body.current.applyImpulse(impulse)
         body.current.applyTorqueImpulse(torque)
+
+        /** 
+        * Camera  
+        **/
     })
 
   return <RigidBody 
