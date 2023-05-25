@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { RigidBody } from '@react-three/rapier'
+import { CuboidCollider, RigidBody } from '@react-three/rapier'
 import { useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
@@ -176,9 +176,8 @@ const BlockEnd = ({ position=[ 0, 0, 0 ] }) => {
 }
 
 const Bounds = ({ length = 1 }) => {
-  console.log(length)
   return (
-    <RigidBody type='fixed'>
+    <RigidBody type='fixed' restitution={0.2} friction={0} >
       <mesh 
         geometry={boxGeometry}
         material={wallMaterial}
@@ -202,6 +201,13 @@ const Bounds = ({ length = 1 }) => {
         position={ [ 0, 0.75, - length * 3.6888] }
         receiveShadow
       /> 
+
+      <CuboidCollider 
+        args={[ 2, 0.1, length * 2 ]}
+        position={[ 0, -0.1, -length * 1.71 ]}
+        restitution={0.2}
+        friction={1}
+      />
     </RigidBody>
   )
 }
