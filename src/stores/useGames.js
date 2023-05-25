@@ -5,18 +5,27 @@ export default create((set) => {
         blockCount: 7,
         phase: 'ready',
         start: () => {
-            set(() => {
-                return { phase: 'playing' }
+            set((state) => {
+                if(state === 'ready'){
+                    return { phase: 'playing' }
+                }
+                return {}
             })
         },
         restart: () => {
-            set(() => {
-                return { phase: 'ready' }
+            set((state) => {
+                if(state === 'playing' || state === 'ended') {
+                    return { phase: 'ready' }
+                }
+                return {}
             })
         },
         end: () => {
-            set(() => {
-                return { phase: 'ended' }
+            set((state) => {
+                if(state === 'playing') {
+                    return { phase: 'ended' }
+                }
+                return {}
             })
         },
 
