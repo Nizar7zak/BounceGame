@@ -68,6 +68,10 @@ body,
     background: #ffffff44;
 }
 
-.controls .large {
+.controls .key.large {
     width: 145px;
+}
+
+.controls .key.active {
+    background: #ffffff99;
 }
