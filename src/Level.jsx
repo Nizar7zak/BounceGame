@@ -8,10 +8,10 @@ THREE.ColorManagement.legacyMode = false
 
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
  
-const floor1Material = new THREE.MeshStandardMaterial({ color: 'limegreen' })
-const floor2Material = new THREE.MeshStandardMaterial({ color: 'greenyellow' })
-const obstacleMaterial = new THREE.MeshStandardMaterial({ color: 'orangered' })
-const wallMaterial = new THREE.MeshStandardMaterial({ color: 'slategrey' })
+const floor1Material = new THREE.MeshStandardMaterial({ color: '#1111111', metalness: 0, roughness: 0 })
+const floor2Material = new THREE.MeshStandardMaterial({ color: '#222222', metalness: 0, roughness: 0 })
+const obstacleMaterial = new THREE.MeshStandardMaterial({ color: 'ff0000', metalness: 0, roughness: 1 })
+const wallMaterial = new THREE.MeshStandardMaterial({ color: '#887777', metalness: 0, roughness: 0 })
 
 const BlockStart = ({ position=[ 0, 0, 0 ] }) => {
     return (
@@ -175,11 +175,7 @@ const BlockEnd = ({ position=[ 0, 0, 0 ] }) => {
         <Text 
             scale={1}
             font='./bebas-neue-v9-latin-regular.woff'
-            // maxWidth={0.25}
-            // lineHeight={0.75}
-            // textAlign="right"
             position={[ 0, 2.25, 2 ]}
-            // rotation-y = { -0.25 }
           > 
           Finish
           <meshBasicMaterial toneMapped={false} />
