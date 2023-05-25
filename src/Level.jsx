@@ -182,7 +182,7 @@ const Bounds = ({ length = 1 }) => {
         geometry={boxGeometry}
         material={wallMaterial}
         scale={ [ 0.3, 1.5, length * 4 ] }
-        position={ [ 2.15, 0.75, - length * 1.71] }
+        position={ [ 2.15, 0.75, - (length * 2) + 2 ] }
         castShadow
       />
 
@@ -190,7 +190,7 @@ const Bounds = ({ length = 1 }) => {
         geometry={boxGeometry}
         material={wallMaterial}
         scale={ [ 0.3, 1.5, length * 4 ] }
-        position={ [ - 2.15, 0.75, - length * 1.71] }
+        position={ [ - 2.15, 0.75, - (length * 2) + 2 ] }
         receiveShadow
       /> 
 
@@ -198,13 +198,13 @@ const Bounds = ({ length = 1 }) => {
         geometry={boxGeometry}
         material={wallMaterial}
         scale={ [ 4, 1.5, 0.3 ] }
-        position={ [ 0, 0.75, - length * 3.6888] }
+        position={ [ 0, 0.75, - (length * 4) + 2 ] }
         receiveShadow
       /> 
 
       <CuboidCollider 
         args={[ 2, 0.1, length * 2 ]}
-        position={[ 0, -0.1, -length * 1.71 ]}
+        position={[ 0, -0.1, -(length * 2) + 2  ]}
         restitution={0.2}
         friction={1}
       />
