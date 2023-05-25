@@ -1,5 +1,9 @@
+import { useKeyboardControls } from "@react-three/drei"
 
 const Interface = () => {
+    const { forward, backward, leftward, rightward, jump } = useKeyboardControls((state => state))
+    console.log(forward)
+
   return (
     <div className="interface">
         <div className="time">0.00</div>
