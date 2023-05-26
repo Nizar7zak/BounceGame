@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber"
 import { RigidBody, useRapier } from "@react-three/rapier"
-import { useKeyboardControls } from "@react-three/drei"
+import { useGLTF, useKeyboardControls } from "@react-three/drei"
 import { useEffect, useRef, useState } from "react"
 import * as THREE from 'three'
 import useGames from "./stores/useGames"
@@ -22,6 +22,7 @@ const Player = () => {
 
     const jump = () => {
         const origin = body.current.translation()
+        console.log(origin)
         origin.y -= 0.31
         const direction = { x: 0, y: -1, z: 0 }
 
@@ -31,7 +32,6 @@ const Player = () => {
         if (hit.toi < 0.15) {
             body.current.applyImpulse({ x: 0, y: 0.5, z: 0 })
         }
-
     }
 
     const reset = () => {
@@ -48,8 +48,6 @@ const Player = () => {
                 if (phase === 'ready') {
                     reset()
                 }
-
-
             }
         )
 
@@ -139,6 +137,8 @@ const Player = () => {
         }
     })
 
+    const football = useGLTF('./football.glb')
+
     return <RigidBody
         ref={body}
         position={[0, 1, 0]}
@@ -148,10 +148,11 @@ const Player = () => {
         linearDamping={0.5}
         angularDamping={0.5}
     >
-        <mesh castShadow >
+        {/* <mesh castShadow >
             <icosahedronGeometry args={[0.3, 1]} />
             <meshStandardMaterial flatShading color='mediumpurple' />
-        </mesh>
+        </mesh> */}
+        <primitive object={football.scene} scale={3.5} />
     </RigidBody>
 }
 
