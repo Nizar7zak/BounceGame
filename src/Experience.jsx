@@ -5,12 +5,11 @@ import Lights from './Lights.jsx'
 import Player from './Player.jsx'
 import useGames from './stores/useGames.js'
 
-export default function Experience()
-{
+export default function Experience() {
     const blockCounts = useGames((state) => state.blockCount)
     const blocksSeed = useGames((state) => state.blocksSeed)
     return <>
-        <color args={[ '#252731' ]} attach='background' />
+        <color args={['#252731']} attach='background' />
 
         <Physics>
             <Lights />
