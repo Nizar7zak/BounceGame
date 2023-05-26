@@ -2,7 +2,7 @@ import { SSR, DepthOfField, EffectComposer } from "@react-three/postprocessing"
 const Effects = () => {
   return (
     <EffectComposer>
-        <SSR 
+        {/* <SSR 
           intensity={ 0.45 }
           exponent={ 1 }
           distance={ 10 }
@@ -28,7 +28,7 @@ const Effects = () => {
           resolutionScale={ 1 }
           velocityResolutionScale={ 1 }
 
-        />
+        /> */}
         <DepthOfField 
             focusDistance={0.01}
             focalLength={0.2}
