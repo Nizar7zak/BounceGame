@@ -18,15 +18,15 @@ const BlockStart = ({ position = [0, 0, 0] }) => {
     <group position={position}>
       <Float floatIntensity={0.25} rotationIntensity={0.25} >
         <Text
-          scale={0.5}
+          scale={0.3}
           font='./bebas-neue-v9-latin-regular.woff'
-          maxWidth={0.25}
+          maxWidth={1.6}
           lineHeight={0.75}
-          textAlign="right"
-          position={[0.75, 0.65, 0]}
+          // textAlign="left"
+          position={[1, 0.65, 0]}
           rotation-y={-0.25}
         >
-          Marble Race
+          Be fast like Cristiano 
           <meshBasicMaterial toneMapped={false} />
         </Text>
       </Float>

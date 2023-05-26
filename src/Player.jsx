@@ -22,7 +22,6 @@ const Player = () => {
 
     const jump = () => {
         const origin = body.current.translation()
-        console.log(origin)
         origin.y -= 0.31
         const direction = { x: 0, y: -1, z: 0 }
 
@@ -82,8 +81,8 @@ const Player = () => {
         const impulse = { x: 0, y: 0, z: 0 }
         const torque = { x: 0, y: 0, z: 0 }
 
-        const impulseStrength = 0.6 * delta
-        const torqueStrength = 0.2 * delta
+        const impulseStrength = 0.45 * delta
+        const torqueStrength = 0.15 * delta
 
         if (forward) {
             impulse.z -= impulseStrength

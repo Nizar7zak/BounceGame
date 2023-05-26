@@ -43,7 +43,7 @@ const Interface = () => {
     return (
         <div className="interface">
             <div ref={time} className="time">0.00</div>
-            {phase === 'ended' ? <div className="restart" onClick={restart}>Restart</div> : null}
+            {phase === 'ended' ? <div className="restart" onClick={restart}>GOAL!!!! - Play Again</div> : null}
 
             <div className="controls">
 
