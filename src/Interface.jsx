@@ -29,7 +29,7 @@ const Interface = () => {
             elapsedTime /= 1000
             elapsedTime = elapsedTime.toFixed(2)
 
-            if(time.current) {
+            if (time.current) {
                 time.current.textContent = elapsedTime
             }
         })
@@ -40,31 +40,31 @@ const Interface = () => {
     }, [])
 
 
-  return (
-    <div className="interface">
-        <div ref={time} className="time">0.00</div>
-        {phase === 'ended' ? <div className="restart" onClick={restart}>Restart</div> : null}
+    return (
+        <div className="interface">
+            <div ref={time} className="time">0.00</div>
+            {phase === 'ended' ? <div className="restart" onClick={restart}>Restart</div> : null}
 
-        <div className="controls">
+            <div className="controls">
 
-            <div className="raw">
-                <div className={`key ${forward ? 'active' : ''}`}></div>
-            </div>
+                <div className="raw">
+                    <div className={`key ${forward ? 'active' : ''}`}></div>
+                </div>
 
-            <div className="raw">
-                <div className={`key ${leftward ? 'active' : ''}`}></div>
-                <div className={`key ${backward ? 'active' : ''}`}></div>
-                <div className={`key ${rightward ? 'active' : ''}`}></div>
-            </div>
+                <div className="raw">
+                    <div className={`key ${leftward ? 'active' : ''}`}></div>
+                    <div className={`key ${backward ? 'active' : ''}`}></div>
+                    <div className={`key ${rightward ? 'active' : ''}`}></div>
+                </div>
 
-            <div className="raw">
-                <div className={`key large ${jump ? 'active' : ''}`}></div>
+                <div className="raw">
+                    <div className={`key large ${jump ? 'active' : ''}`}></div>
+                </div>
+
             </div>
 
         </div>
-
-    </div>
-  )
+    )
 }
 
 export default Interface
