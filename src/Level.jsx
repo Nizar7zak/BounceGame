@@ -165,6 +165,7 @@ export const BlockAxe = ({ position = [0, 0, 0] }) => {
 const BlockEnd = ({ position = [0, 0, 0] }) => {
 
   const hamburger = useGLTF('./hamburger.glb')
+  const footballGoal = useGLTF('./footballGoal.glb')
   hamburger.scene.children.forEach((mesh) => {
     mesh.castShadow = true
   })
@@ -189,8 +190,9 @@ const BlockEnd = ({ position = [0, 0, 0] }) => {
         receiveShadow
       />
 
-      <RigidBody type='fixed' colliders='hull' position={[0, 0.25, 0]} restitution={0.2} friction={0} >
-        <primitive object={hamburger.scene} scale={0.2} />
+      <RigidBody type='fixed' colliders={false} position={[0, 0, -0.75]} restitution={0.2} friction={0} >
+        {/* <primitive object={hamburger.scene} scale={0.2} /> */}
+        <primitive object={footballGoal.scene} scale={0.5} />
 
       </RigidBody>
 
