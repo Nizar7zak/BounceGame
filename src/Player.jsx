@@ -15,7 +15,7 @@ const Player = () => {
     const blockCounts = useGames((state) => state.blockCount)
     const restart = useGames((state) => state.restart)
 
-    const [ subscribeKeys, getKeys ] = useKeyboardControls()
+    const [subscribeKeys, getKeys] = useKeyboardControls()
 
     const { rapier, world } = useRapier()
     const rapierWorld = world.raw()
@@ -25,11 +25,11 @@ const Player = () => {
         origin.y -= 0.31
         const direction = { x: 0, y: -1, z: 0 }
 
-        const ray = new rapier.Ray(origin, direction) 
+        const ray = new rapier.Ray(origin, direction)
         const hit = rapierWorld.castRay(ray, 10, true)
 
-        if(hit.toi < 0.15) {
-            body.current.applyImpulse({ x: 0, y: 0.5 , z: 0 })
+        if (hit.toi < 0.15) {
+            body.current.applyImpulse({ x: 0, y: 0.5, z: 0 })
         }
 
     }
@@ -45,7 +45,7 @@ const Player = () => {
             (state) => state.phase,
             (phase) => {
 
-                if (phase === 'ready'){
+                if (phase === 'ready') {
                     reset()
                 }
 
@@ -56,7 +56,7 @@ const Player = () => {
         const unsubscribeJump = subscribeKeys(
             (state) => state.jump,
             (value) => {
-                if(value){
+                if (value) {
                     jump()
                 }
             }
@@ -73,7 +73,7 @@ const Player = () => {
             unsubscribeReset()
         }
     }, [])
- 
+
     useFrame((state, delta) => {
         /** 
         * Controls  
@@ -87,19 +87,19 @@ const Player = () => {
         const impulseStrength = 0.6 * delta
         const torqueStrength = 0.2 * delta
 
-        if(forward) {
+        if (forward) {
             impulse.z -= impulseStrength
             torque.x -= torqueStrength
         }
-        if(backward) {
+        if (backward) {
             impulse.z += impulseStrength
             torque.x += torqueStrength
-        } 
-        if(leftward) {
+        }
+        if (leftward) {
             impulse.x -= impulseStrength
             torque.z += torqueStrength
         }
-        if(rightward) {
+        if (rightward) {
             impulse.x += impulseStrength
             torque.z -= torqueStrength
         }
@@ -110,46 +110,46 @@ const Player = () => {
         /** 
         * Camera  
         **/
-       const bodyPosition = body.current.translation()
+        const bodyPosition = body.current.translation()
 
-       const cameraPosition = new THREE.Vector3()
-       cameraPosition.copy(bodyPosition)
-       cameraPosition.z += 2.25
-       cameraPosition.y += 0.65
+        const cameraPosition = new THREE.Vector3()
+        cameraPosition.copy(bodyPosition)
+        cameraPosition.z += 2.25
+        cameraPosition.y += 0.65
 
-       const cameraTarget = new THREE.Vector3()
-       cameraTarget.copy(bodyPosition)
-       cameraTarget.y += 0.25
+        const cameraTarget = new THREE.Vector3()
+        cameraTarget.copy(bodyPosition)
+        cameraTarget.y += 0.25
 
-       smoothedCameraPosition.lerp(cameraPosition, 5 * delta)
-       smoothedCameraTarget.lerp(cameraTarget, 5 * delta)
+        smoothedCameraPosition.lerp(cameraPosition, 5 * delta)
+        smoothedCameraTarget.lerp(cameraTarget, 5 * delta)
 
-       state.camera.position.copy(smoothedCameraPosition)
-       state.camera.lookAt(smoothedCameraTarget)
+        state.camera.position.copy(smoothedCameraPosition)
+        state.camera.lookAt(smoothedCameraTarget)
 
-       /** 
-        * Phases 
-        **/
-       if(bodyPosition.z < - (blockCounts * 4 + 2)) {
+        /** 
+         * Phases 
+         **/
+        if (bodyPosition.z < - (blockCounts * 4 + 2)) {
             end()
-       }
+        }
 
-       if(bodyPosition.y < -4) {
+        if (bodyPosition.y < -4) {
             restart()
-       }
+        }
     })
 
-  return <RigidBody 
-            ref={body}
-            position={[ 0, 1, 0 ]}
-            colliders='ball'
-            restitution={0.2}
-            friction={1}
-            linearDamping={0.5}
-            angularDamping={0.5}
-        >
+    return <RigidBody
+        ref={body}
+        position={[0, 1, 0]}
+        colliders='ball'
+        restitution={0.2}
+        friction={1}
+        linearDamping={0.5}
+        angularDamping={0.5}
+    >
         <mesh castShadow >
-            <icosahedronGeometry args={[ 0.3, 1 ]} />
+            <icosahedronGeometry args={[0.3, 1]} />
             <meshStandardMaterial flatShading color='mediumpurple' />
         </mesh>
     </RigidBody>
