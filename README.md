@@ -1,7 +1,8 @@
 # BounceGame
 
 BounceGame is an interactive 3D game where you control a bouncing ball, aiming to score goals. The game combines elements of football with fun physics-based mechanics.
-live site here:- https://bounce-game-roan.vercel.app/ can you finish it within 5 second? ;) do not cheat by edit HTML :D 
+live site here:- https://bounce-game-roan.vercel.app/ 
+Can you finish it within 5 second? ;) do not cheat by edit HTML :D 
 ## Technologies Used
 
 - **react-three-fiber**: A React framework for building 3D scenes.
@@ -59,17 +60,6 @@ Contributions are welcome! If you'd like to contribute, please:
 
 ---
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
----
-
-## Feedback
-
-If you have any suggestions or feedback, feel free to open an issue in the repository or contact the project maintainer.
-
----
 
 Enjoy playing BounceGame and have fun scoring goals!
 
