@@ -2,6 +2,7 @@ import { useKeyboardControls } from "@react-three/drei"
 import { addEffect } from "@react-three/fiber"
 import { useEffect, useRef } from "react"
 import useGames from "./stores/useGames"
+import TouchControls from "./TouchControls"
 
 const Interface = () => {
     const time = useRef()
@@ -52,7 +53,9 @@ const Interface = () => {
             </div>
             {phase === 'ended' ? <div className="restart" onClick={restart}>GOAL!!!! - Play Again</div> : null}
 
-            <div className="controls">
+            <TouchControls />
+
+            <div className="controls controls-desktop">
 
                 <div className="raw">
                     <div className={`key ${forward ? 'active' : ''}`}></div>
