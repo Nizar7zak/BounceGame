@@ -1,7 +1,17 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware"
 
-export default create(subscribeWithSelector((set) => {
+function notifyParentComplete(state) {
+    if (typeof window === 'undefined' || window.parent === window) return
+    window.parent.postMessage({
+        type: 'bouncegame:complete',
+        elapsedMs: state.endTime - state.startTime,
+        glassBroken: state.glassBroken,
+        blockCount: state.blockCount,
+    }, '*')
+}
+
+const useGames = create(subscribeWithSelector((set) => {
     return {
         blockCount: 10,
         blocksSeed: 0,
@@ -74,7 +84,9 @@ export default create(subscribeWithSelector((set) => {
         end: () => {
             set((state) => {
                 if (state.phase === 'playing') {
-                    return { phase: 'ended', endTime: Date.now() }
+                    const next = { phase: 'ended', endTime: Date.now() }
+                    notifyParentComplete({ ...state, ...next })
+                    return next
                 }
                 return {}
             })
@@ -84,3 +96,5 @@ export default create(subscribeWithSelector((set) => {
     }
 }
 ))
+
+export default useGames
