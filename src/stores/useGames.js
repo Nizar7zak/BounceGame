@@ -11,6 +11,29 @@ export default create(subscribeWithSelector((set) => {
         phase: 'ready',
         hitShake: 0,
         glassBroken: 0,
+        touchInput: {
+            forward: false,
+            backward: false,
+            leftward: false,
+            rightward: false,
+            jump: false,
+        },
+        setTouchInput: (patch) => {
+            set((state) => ({
+                touchInput: { ...state.touchInput, ...patch },
+            }))
+        },
+        resetTouchInput: () => {
+            set({
+                touchInput: {
+                    forward: false,
+                    backward: false,
+                    leftward: false,
+                    rightward: false,
+                    jump: false,
+                },
+            })
+        },
         punchShake: () => {
             set((state) => ({
                 hitShake: Math.min(state.hitShake + 0.35, 1),
@@ -32,7 +55,18 @@ export default create(subscribeWithSelector((set) => {
         restart: () => {
             set((state) => {
                 if (state.phase === 'playing' || state.phase === 'ended') {
-                    return { phase: 'ready', blocksSeed: Math.random(), glassBroken: 0 }
+                    return {
+                        phase: 'ready',
+                        blocksSeed: Math.random(),
+                        glassBroken: 0,
+                        touchInput: {
+                            forward: false,
+                            backward: false,
+                            leftward: false,
+                            rightward: false,
+                            jump: false,
+                        },
+                    }
                 }
                 return {}
             })

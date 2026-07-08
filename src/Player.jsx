@@ -21,6 +21,7 @@ const Player = () => {
     const restart = useGames((state) => state.restart)
 
     const [subscribeKeys, getKeys] = useKeyboardControls()
+    const touchInput = useGames((state) => state.touchInput)
 
     const { rapier, world } = useRapier()
 
@@ -66,12 +67,22 @@ const Player = () => {
             }
         )
 
+        const unsubscribeTouchJump = useGames.subscribe(
+            (state) => state.touchInput.jump,
+            (value) => {
+                if (value) {
+                    jump()
+                }
+            }
+        )
+
         const unsubscribeAny = subscribeKeys(() => {
             start()
         })
 
         return () => {
             unsubscribeJump()
+            unsubscribeTouchJump()
             unsubscribeAny()
             unsubscribeReset()
         }
@@ -79,7 +90,10 @@ const Player = () => {
 
     useFrame((state, delta) => {
         const keys = getKeys()
-        const { forward, backward, leftward, rightward } = keys
+        const forward = keys.forward || touchInput.forward
+        const backward = keys.backward || touchInput.backward
+        const leftward = keys.leftward || touchInput.leftward
+        const rightward = keys.rightward || touchInput.rightward
 
         const impulse = { x: 0, y: 0, z: 0 }
         const torque = { x: 0, y: 0, z: 0 }

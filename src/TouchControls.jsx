@@ -1,4 +1,3 @@
-import { useKeyboardControls } from '@react-three/drei'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useGames from './stores/useGames.js'
 
@@ -6,7 +5,8 @@ const STICK_RADIUS = 48
 const DEADZONE = 0.18
 
 export default function TouchControls() {
-  const [, , store] = useKeyboardControls()
+  const setTouchInput = useGames((state) => state.setTouchInput)
+  const resetTouchInput = useGames((state) => state.resetTouchInput)
   const zoneRef = useRef(null)
   const touchId = useRef(null)
   const origin = useRef({ x: 0, y: 0 })
@@ -19,25 +19,25 @@ export default function TouchControls() {
       const normX = mag > 1 ? dx / mag : dx
       const normY = mag > 1 ? dy / mag : dy
 
-      store.setState({
+      setTouchInput({
         forward: normY < -DEADZONE,
         backward: normY > DEADZONE,
         leftward: normX < -DEADZONE,
         rightward: normX > DEADZONE,
       })
     },
-    [store]
+    [setTouchInput]
   )
 
   const resetMovement = useCallback(() => {
-    store.setState({
+    setTouchInput({
       forward: false,
       backward: false,
       leftward: false,
       rightward: false,
     })
     setStick({ x: 0, y: 0 })
-  }, [store])
+  }, [setTouchInput])
 
   const updateStick = useCallback(
     (clientX, clientY) => {
@@ -79,31 +79,42 @@ export default function TouchControls() {
     (event) => {
       event.preventDefault()
       useGames.getState().start()
-      store.setState({ jump: true })
+      setTouchInput({ jump: true })
       setJumpActive(true)
     },
-    [store]
+    [setTouchInput]
   )
 
   const handleJumpEnd = useCallback(
     (event) => {
       event.preventDefault()
-      store.setState({ jump: false })
+      setTouchInput({ jump: false })
       setJumpActive(false)
     },
-    [store]
+    [setTouchInput]
   )
 
   useEffect(() => {
-    const handleMove = (event) => {
-      if (touchId.current === null) return
+    const findTouch = (event) => {
+      if (touchId.current === null) return null
+
+      for (const touch of event.touches) {
+        if (touch.identifier === touchId.current) return touch
+      }
 
       for (const touch of event.changedTouches) {
-        if (touch.identifier === touchId.current) {
-          event.preventDefault()
-          updateStick(touch.clientX, touch.clientY)
-        }
+        if (touch.identifier === touchId.current) return touch
       }
+
+      return null
+    }
+
+    const handleMove = (event) => {
+      const touch = findTouch(event)
+      if (!touch) return
+
+      event.preventDefault()
+      updateStick(touch.clientX, touch.clientY)
     }
 
     const handleEnd = (event) => {
@@ -124,8 +135,9 @@ export default function TouchControls() {
       window.removeEventListener('touchmove', handleMove)
       window.removeEventListener('touchend', handleEnd)
       window.removeEventListener('touchcancel', handleEnd)
+      resetTouchInput()
     }
-  }, [resetMovement, updateStick])
+  }, [resetMovement, resetTouchInput, updateStick])
 
   return (
     <div className="touch-controls">
