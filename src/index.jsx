@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import Experience from './Experience.jsx'
 import { KeyboardControls } from '@react-three/drei'
 import Interface from './Interface'
+import EmbedBridge from './EmbedBridge.jsx'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
@@ -27,10 +28,17 @@ root.render(
                 far: 200,
                 position: [2.5, 4, 6]
             }}
+            onCreated={({ gl }) => {
+                if (new URLSearchParams(window.location.search).get('embed') === '1') {
+                    gl.domElement.tabIndex = 0
+                    gl.domElement.focus({ preventScroll: true })
+                }
+            }}
         >
             <Experience />
         </Canvas>
 
         <Interface />
+        <EmbedBridge />
     </KeyboardControls>
 )
