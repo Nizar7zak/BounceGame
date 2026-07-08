@@ -18,7 +18,22 @@ function focusGameSurface() {
 }
 
 function startEmbeddedRun() {
-    useGames.getState().start()
+    const { phase, start, restart } = useGames.getState()
+    if (phase === 'ended') {
+        restart()
+        return
+    }
+    start()
+    focusGameSurface()
+}
+
+function restartEmbeddedRun() {
+    const { phase, restart } = useGames.getState()
+    if (phase === 'ended' || phase === 'playing') {
+        restart()
+    } else {
+        startEmbeddedRun()
+    }
     focusGameSurface()
 }
 
@@ -27,6 +42,9 @@ export default function EmbedBridge() {
         const onMessage = (event) => {
             if (event.data?.type === 'bouncegame:start') {
                 startEmbeddedRun()
+            }
+            if (event.data?.type === 'bouncegame:restart') {
+                restartEmbeddedRun()
             }
         }
 

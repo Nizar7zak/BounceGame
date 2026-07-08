@@ -1,6 +1,11 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware"
 
+function isEmbedMode() {
+    if (typeof window === 'undefined') return false
+    return new URLSearchParams(window.location.search).get('embed') === '1'
+}
+
 function notifyParentComplete(state) {
     if (typeof window === 'undefined' || window.parent === window) return
     window.parent.postMessage({
@@ -9,6 +14,11 @@ function notifyParentComplete(state) {
         glassBroken: state.glassBroken,
         blockCount: state.blockCount,
     }, '*')
+}
+
+function notifyParentRestart() {
+    if (typeof window === 'undefined' || window.parent === window) return
+    window.parent.postMessage({ type: 'bouncegame:restart' }, '*')
 }
 
 const useGames = create(subscribeWithSelector((set) => {
@@ -64,21 +74,40 @@ const useGames = create(subscribeWithSelector((set) => {
         },
         restart: () => {
             set((state) => {
-                if (state.phase === 'playing' || state.phase === 'ended') {
+                if (state.phase !== 'playing' && state.phase !== 'ended') {
+                    return {}
+                }
+
+                notifyParentRestart()
+
+                const embed = isEmbedMode()
+                const next = {
+                    blocksSeed: Math.random(),
+                    glassBroken: 0,
+                    hitShake: 0,
+                    endTime: 0,
+                    touchInput: {
+                        forward: false,
+                        backward: false,
+                        leftward: false,
+                        rightward: false,
+                        jump: false,
+                    },
+                }
+
+                if (embed) {
                     return {
-                        phase: 'ready',
-                        blocksSeed: Math.random(),
-                        glassBroken: 0,
-                        touchInput: {
-                            forward: false,
-                            backward: false,
-                            leftward: false,
-                            rightward: false,
-                            jump: false,
-                        },
+                        ...next,
+                        phase: 'playing',
+                        startTime: Date.now(),
                     }
                 }
-                return {}
+
+                return {
+                    ...next,
+                    phase: 'ready',
+                    startTime: 0,
+                }
             })
         },
         end: () => {

@@ -39,22 +39,37 @@ const Player = () => {
     }
 
     const reset = () => {
+        if (!body.current) return
         body.current.setTranslation({ x: 0, y: 1, z: 0 })
         body.current.setLinvel({ x: 0, y: 0, z: 0 })
-        body.current.setAngvel({ x: 0, y: 1, z: 0 })
+        body.current.setAngvel({ x: 0, y: 0, z: 0 })
         squash.current = 0
         if (visualGroup.current) {
             visualGroup.current.scale.set(1, 1, 1)
         }
     }
 
+    const snapCamera = () => {
+        smoothedCameraPosition.set(0, 1.65, 2.25)
+        smoothedCameraTarget.set(0, 1.25, 0)
+    }
+
     useEffect(() => {
         const unsubscribeReset = useGames.subscribe(
             (state) => state.phase,
             (phase) => {
-                if (phase === 'ready') {
+                if (phase === 'ready' || phase === 'playing') {
                     reset()
+                    snapCamera()
                 }
+            }
+        )
+
+        const unsubscribeSeed = useGames.subscribe(
+            (state) => state.blocksSeed,
+            () => {
+                reset()
+                snapCamera()
             }
         )
 
@@ -85,41 +100,47 @@ const Player = () => {
             unsubscribeTouchJump()
             unsubscribeAny()
             unsubscribeReset()
+            unsubscribeSeed()
         }
     }, [])
 
     useFrame((state, delta) => {
+        const gameState = useGames.getState()
+        const phase = gameState.phase
+
         const keys = getKeys()
         const forward = keys.forward || touchInput.forward
         const backward = keys.backward || touchInput.backward
         const leftward = keys.leftward || touchInput.leftward
         const rightward = keys.rightward || touchInput.rightward
 
-        const impulse = { x: 0, y: 0, z: 0 }
-        const torque = { x: 0, y: 0, z: 0 }
+        if (phase === 'playing') {
+            const impulse = { x: 0, y: 0, z: 0 }
+            const torque = { x: 0, y: 0, z: 0 }
 
-        const impulseStrength = 0.45 * delta
-        const torqueStrength = 0.15 * delta
+            const impulseStrength = 0.45 * delta
+            const torqueStrength = 0.15 * delta
 
-        if (forward) {
-            impulse.z -= impulseStrength
-            torque.x -= torqueStrength
-        }
-        if (backward) {
-            impulse.z += impulseStrength
-            torque.x += torqueStrength
-        }
-        if (leftward) {
-            impulse.x -= impulseStrength
-            torque.z += torqueStrength
-        }
-        if (rightward) {
-            impulse.x += impulseStrength
-            torque.z -= torqueStrength
-        }
+            if (forward) {
+                impulse.z -= impulseStrength
+                torque.x -= torqueStrength
+            }
+            if (backward) {
+                impulse.z += impulseStrength
+                torque.x += torqueStrength
+            }
+            if (leftward) {
+                impulse.x -= impulseStrength
+                torque.z += torqueStrength
+            }
+            if (rightward) {
+                impulse.x += impulseStrength
+                torque.z -= torqueStrength
+            }
 
-        body.current.applyImpulse(impulse)
-        body.current.applyTorqueImpulse(torque)
+            body.current.applyImpulse(impulse)
+            body.current.applyTorqueImpulse(torque)
+        }
 
         const bodyPosition = body.current.translation()
         const linvel = body.current.linvel()
@@ -152,7 +173,6 @@ const Player = () => {
         smoothedCameraPosition.lerp(cameraPosition, 5 * delta)
         smoothedCameraTarget.lerp(cameraTarget, 5 * delta)
 
-        const gameState = useGames.getState()
         let shake = gameState.hitShake
         if (shake > 0.01) {
             shake = shake * Math.exp(-4 * delta)
@@ -168,6 +188,8 @@ const Player = () => {
 
         state.camera.position.copy(smoothedCameraPosition).add(shakeOffset.current)
         state.camera.lookAt(smoothedCameraTarget)
+
+        if (phase !== 'playing') return
 
         if (bodyPosition.z < -(blockCounts * 4 + 2)) {
             end()
