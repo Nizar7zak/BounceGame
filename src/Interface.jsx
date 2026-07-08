@@ -8,6 +8,8 @@ const Interface = () => {
 
     const restart = useGames((state) => state.restart)
     const phase = useGames((state) => state.phase)
+    const glassBroken = useGames((state) => state.glassBroken)
+    const blockCount = useGames((state) => state.blockCount)
 
     const forward = useKeyboardControls((state => state.forward))
     const backward = useKeyboardControls((state => state.backward))
@@ -42,7 +44,12 @@ const Interface = () => {
 
     return (
         <div className="interface">
-            <div ref={time} className="time">0.00</div>
+            <div className="hud-left">
+                <div ref={time} className="time">0.00</div>
+                <div className="glass-score">
+                    Glass broken: {glassBroken} / {blockCount}
+                </div>
+            </div>
             {phase === 'ended' ? <div className="restart" onClick={restart}>GOAL!!!! - Play Again</div> : null}
 
             <div className="controls">

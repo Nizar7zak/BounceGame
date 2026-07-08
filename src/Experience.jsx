@@ -1,22 +1,37 @@
 import { Physics } from '@react-three/rapier'
+import { Stars, Environment } from '@react-three/drei'
 import Effects from './Effects.jsx'
-import { Level, BlockAxe, BlockLimbo, BlockSpinner } from './Level.jsx'
+import Confetti from './Confetti.jsx'
+import { Level } from './Level.jsx'
 import Lights from './Lights.jsx'
 import Player from './Player.jsx'
 import useGames from './stores/useGames.js'
 
 export default function Experience() {
-    const blockCounts = useGames((state) => state.blockCount)
-    const blocksSeed = useGames((state) => state.blocksSeed)
-    return <>
-        <color args={['#252731']} attach='background' />
+  const blockCounts = useGames((state) => state.blockCount)
+  const blocksSeed = useGames((state) => state.blocksSeed)
+  const phase = useGames((state) => state.phase)
 
-        <Physics>
-            <Lights />
-            <Level count={blockCounts} seed={blocksSeed} />
-            <Player />
-        </Physics>
-        <Effects />
+  return (
+    <>
+      <color args={['#101826']} attach="background" />
+      <fog attach="fog" args={['#101826', 28, 90]} />
 
+      <Environment files="./textures/hdri/moonless_golf_1k.hdr" environmentIntensity={0.35} />
+
+      <Stars radius={80} depth={40} count={1200} factor={3.5} saturation={0} fade speed={0.4} />
+
+      <Physics>
+        <Lights />
+        <Level count={blockCounts} seed={blocksSeed} />
+        <Player />
+      </Physics>
+
+      {phase === 'ended' ? (
+        <Confetti position={[0, 1.2, -(blockCounts + 1) * 4 - 0.75]} />
+      ) : null}
+
+      <Effects />
     </>
+  )
 }

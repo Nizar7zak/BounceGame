@@ -19,6 +19,8 @@ root.render(
     >
         <Canvas
             shadows
+            dpr={[1, 1.5]}
+            gl={{ antialias: true, toneMappingExposure: 1.35 }}
             camera={{
                 fov: 45,
                 near: 0.1,
