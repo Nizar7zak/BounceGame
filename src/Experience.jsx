@@ -10,6 +10,7 @@ import useGames from './stores/useGames.js'
 export default function Experience() {
   const blockCounts = useGames((state) => state.blockCount)
   const blocksSeed = useGames((state) => state.blocksSeed)
+  const runId = useGames((state) => state.runId)
   const phase = useGames((state) => state.phase)
 
   return (
@@ -21,7 +22,7 @@ export default function Experience() {
 
       <Stars radius={80} depth={40} count={1200} factor={3.5} saturation={0} fade speed={0.4} />
 
-      <Physics>
+      <Physics key={runId}>
         <Lights />
         <Level count={blockCounts} seed={blocksSeed} />
         <Player />

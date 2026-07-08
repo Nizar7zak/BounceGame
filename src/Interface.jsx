@@ -51,7 +51,17 @@ const Interface = () => {
                     Glass broken: {glassBroken} / {blockCount}
                 </div>
             </div>
-            {phase === 'ended' ? <div className="restart" onClick={restart}>GOAL!!!! - Play Again</div> : null}
+            {phase === 'ended' ? (
+                <div
+                    className="restart"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        restart()
+                    }}
+                >
+                    GOAL!!!! - Play Again
+                </div>
+            ) : null}
 
             <TouchControls />
 

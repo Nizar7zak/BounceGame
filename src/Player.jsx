@@ -11,8 +11,8 @@ const Player = () => {
     const prevYVel = useRef(0)
     const squash = useRef(0)
 
-    const [smoothedCameraPosition] = useState(() => new THREE.Vector3(10, 10, 10))
-    const [smoothedCameraTarget] = useState(() => new THREE.Vector3())
+    const [smoothedCameraPosition] = useState(() => new THREE.Vector3(0, 1.65, 2.25))
+    const [smoothedCameraTarget] = useState(() => new THREE.Vector3(0, 1.25, 0))
     const shakeOffset = useRef(new THREE.Vector3())
 
     const start = useGames((state) => state.start)
@@ -58,15 +58,15 @@ const Player = () => {
         const unsubscribeReset = useGames.subscribe(
             (state) => state.phase,
             (phase) => {
-                if (phase === 'ready' || phase === 'playing') {
+                if (phase === 'ready') {
                     reset()
                     snapCamera()
                 }
             }
         )
 
-        const unsubscribeSeed = useGames.subscribe(
-            (state) => state.blocksSeed,
+        const unsubscribeRun = useGames.subscribe(
+            (state) => state.runId,
             () => {
                 reset()
                 snapCamera()
@@ -100,11 +100,13 @@ const Player = () => {
             unsubscribeTouchJump()
             unsubscribeAny()
             unsubscribeReset()
-            unsubscribeSeed()
+            unsubscribeRun()
         }
     }, [])
 
     useFrame((state, delta) => {
+        if (!body.current) return
+
         const gameState = useGames.getState()
         const phase = gameState.phase
 
@@ -190,6 +192,8 @@ const Player = () => {
         state.camera.lookAt(smoothedCameraTarget)
 
         if (phase !== 'playing') return
+
+        if (Date.now() < gameState.goalLockUntil) return
 
         if (bodyPosition.z < -(blockCounts * 4 + 2)) {
             end()

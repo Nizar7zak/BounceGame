@@ -31,6 +31,8 @@ const useGames = create(subscribeWithSelector((set) => {
         phase: 'ready',
         hitShake: 0,
         glassBroken: 0,
+        runId: 0,
+        goalLockUntil: 0,
         touchInput: {
             forward: false,
             backward: false,
@@ -82,10 +84,12 @@ const useGames = create(subscribeWithSelector((set) => {
 
                 const embed = isEmbedMode()
                 const next = {
+                    runId: state.runId + 1,
                     blocksSeed: Math.random(),
                     glassBroken: 0,
                     hitShake: 0,
                     endTime: 0,
+                    goalLockUntil: Date.now() + 1200,
                     touchInput: {
                         forward: false,
                         backward: false,
@@ -98,8 +102,8 @@ const useGames = create(subscribeWithSelector((set) => {
                 if (embed) {
                     return {
                         ...next,
-                        phase: 'playing',
-                        startTime: Date.now(),
+                        phase: 'ready',
+                        startTime: 0,
                     }
                 }
 
@@ -109,6 +113,12 @@ const useGames = create(subscribeWithSelector((set) => {
                     startTime: 0,
                 }
             })
+
+            if (isEmbedMode()) {
+                setTimeout(() => {
+                    useGames.getState().start()
+                }, 150)
+            }
         },
         end: () => {
             set((state) => {
